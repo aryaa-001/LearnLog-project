@@ -2,24 +2,22 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axiosInstance from "../utils/axiosInstance";
 import { loginSuccess, authFinished } from "../Redux/authSlice";
-import axios from "axios";
 
 const AuthLoader = ({ children }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await axiosInstance.get("/api/auth/me");
+useEffect(() => {
+  const checkAuth = async () => {
+    try {
+      const res = await axiosInstance.get("/api/auth/me");
+      dispatch(loginSuccess(res.data.user));
+    } catch (error) {
+      dispatch(logout());
+    }
+  };
 
-        dispatch(loginSuccess(res.data.user));
-      } catch (error) {
-        dispatch(authFinished());
-      }
-    };
-
-    checkAuth();
-  }, [dispatch]);
+  checkAuth();
+}, [dispatch]);
 
   return children;
 };

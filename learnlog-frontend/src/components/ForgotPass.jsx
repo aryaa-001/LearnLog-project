@@ -8,12 +8,12 @@ const ForgotPass = () => {
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = async (data) => {
+    console.log("Forgot password submit triggered");
     try {
       const res = await axiosInstance.post(
         "/api/auth/forgot-password",
         data
       );
-      console.log("jbckld")
 
       reset();
       toast.success(res.data.message);

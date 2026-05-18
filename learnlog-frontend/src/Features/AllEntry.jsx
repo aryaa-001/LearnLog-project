@@ -85,12 +85,9 @@ const AllEntries = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.put(
-        `http://localhost:5858/api/entries/edit/${selectedEntry._id}`,
+      const res = await axiosInstance.put(
+        `/api/entries/edit/${selectedEntry._id}`,
         editData,
-        {
-          withCredentials: true,
-        },
       );
 
       setEntries((prev) =>

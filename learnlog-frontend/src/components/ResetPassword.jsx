@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams, Link } from "react-router-dom";
@@ -21,15 +21,9 @@ const ResetPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.put(
-        `http://localhost:5858/api/auth/reset-password/${token}`,
-        {
-          password: data.password,
-        },
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await axiosInstance.put(`/api/auth/reset-password/${token}`, {
+        password: data.password,
+      });
 
       toast.success(res.data.message || "Password reset successfully");
 

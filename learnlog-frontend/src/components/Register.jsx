@@ -1,14 +1,9 @@
 import React from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
-import {
-  BookOpen,
-  TrendingUp,
-  Target,
-  UserPlus,
-} from "lucide-react";
+import { BookOpen, TrendingUp, Target, UserPlus } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,13 +12,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5858/api/auth/register",
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post("/api/auth/register", data);
 
       reset();
       toast.success(res.data.message);
@@ -94,9 +83,7 @@ const Register = () => {
               <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-black text-yellow-400 flex items-center justify-center shadow-lg">
                 <UserPlus size={26} />
               </div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                LearnLog
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900">LearnLog</h1>
             </div>
 
             <div className="mb-8">

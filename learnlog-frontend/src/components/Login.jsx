@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {
-  Eye,
-  EyeOff,
-  BookOpen,
-  TrendingUp,
-  Target,
-} from "lucide-react";
+import axiosInstance from "../utils/axiosInstance";
+import { Eye, EyeOff, BookOpen, TrendingUp, Target } from "lucide-react";
 import { loginSuccess } from "../Redux/authSlice";
 
 const Login = () => {
@@ -22,13 +16,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5858/api/auth/login",
-        data,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axiosInstance.post("/api/auth/login", data);
 
       reset();
       toast.success(res.data.message);
@@ -53,8 +41,8 @@ const Login = () => {
             </h1>
 
             <p className="text-gray-300 text-lg leading-relaxed max-w-md">
-              Track your daily learning journey, measure your progress,
-              and build a consistent study habit.
+              Track your daily learning journey, measure your progress, and
+              build a consistent study habit.
             </p>
           </div>
 
@@ -81,9 +69,7 @@ const Login = () => {
               <div className="w-10 h-10 rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400">
                 <Target size={20} />
               </div>
-              <span className="text-gray-300">
-                Stay focused and consistent
-              </span>
+              <span className="text-gray-300">Stay focused and consistent</span>
             </div>
           </div>
         </div>
@@ -94,9 +80,7 @@ const Login = () => {
               <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-black text-yellow-400 flex items-center justify-center shadow-lg">
                 <BookOpen size={26} />
               </div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                LearnLog
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900">LearnLog</h1>
             </div>
 
             <div className="mb-8">
@@ -108,10 +92,7 @@ const Login = () => {
               </p>
             </div>
 
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="space-y-5"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Email Address
@@ -150,16 +131,10 @@ const Login = () => {
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowPassword(!showPassword)
-                    }
+                    onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
                   >
-                    {showPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>

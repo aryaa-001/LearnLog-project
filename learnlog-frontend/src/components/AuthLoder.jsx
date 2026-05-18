@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  loginSuccess,
-  authFinished,
-} from "../Redux/authSlice";
+import axiosInstance from "../utils/axiosInstance";
+import { loginSuccess, authFinished } from "../Redux/authSlice";
 import axios from "axios";
 
 const AuthLoader = ({ children }) => {
@@ -12,12 +10,7 @@ const AuthLoader = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5858/api/auth/me",
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.get("/api/auth/me");
 
         dispatch(loginSuccess(res.data.user));
       } catch (error) {

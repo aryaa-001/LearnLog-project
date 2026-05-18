@@ -1,16 +1,16 @@
 import React from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
 
 const ForgotPass = () => {
   const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5858/api/auth/forgot-password",
+      const res = await axiosInstance.post(
+        "/api/auth/forgot-password",
         data
       );
 

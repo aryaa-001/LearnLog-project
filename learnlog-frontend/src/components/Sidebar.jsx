@@ -1,12 +1,7 @@
 import React from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
-import {
-  BookOpen,
-  PlusCircle,
-  Search,
-  LogOut,
-} from "lucide-react";
+import axiosInstance from "../utils/axiosInstance";
+import { BookOpen, PlusCircle, Search, LogOut } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../Redux/authSlice";
@@ -17,21 +12,13 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "http://localhost:5858/api/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+      await axiosInstance.post("/api/auth/logout", {});
 
       dispatch(logoutSuccess());
       toast.success("Logged out successfully");
       navigate("/login");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Logout failed",
-      );
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   };
 
@@ -45,12 +32,8 @@ const Sidebar = () => {
   return (
     <aside className="fixed left-0 top-0 h-full w-72 bg-linear-to-b from-black via-gray-950 to-black border-r border-gray-800 shadow-2xl hidden lg:flex flex-col">
       <div className="px-6 py-6 border-b border-gray-800">
-        <h1 className="text-3xl font-bold text-yellow-400">
-         LearnLog
-        </h1>
-        <p className="text-sm text-gray-400 mt-1">
-          Student Learning Journal
-        </p>
+        <h1 className="text-3xl font-bold text-yellow-400">LearnLog</h1>
+        <p className="text-sm text-gray-400 mt-1">Student Learning Journal</p>
       </div>
 
       <nav className="flex-1 p-4 space-y-3">

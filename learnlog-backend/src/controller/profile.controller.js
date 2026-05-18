@@ -13,7 +13,7 @@ const updateProfileInfo = async (req, res) => {
     };
 
     if (req.file) {
-      updateData.profileImage = `http://localhost:5858/uploads/${req.file.filename}`;
+      updateData.profileImage = `https://learnlog-project-rx9c.onrender.com/uploads/${req.file.filename}`;
     }
 
     const user = await userModel

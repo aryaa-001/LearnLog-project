@@ -119,7 +119,14 @@ const userLogout = async (req, res) => {
 
 const handleForgotPassword = async (req, res) => {
   try {
-    const normalizedEmail = req.body.email.toLowerCase().trim();
+    const normalizedEmail = req.body.email?.toLowerCase().trim();
+
+    if (!normalizedEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
 
     const user = await userModel.findOne({
       email: normalizedEmail,
@@ -145,7 +152,8 @@ const handleForgotPassword = async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    const resetUrl = `${clientUrl.replace(/\/$/, "")}/reset-password/${resetToken}`;
 
     await sendEmail({
       to: user.email,
@@ -190,7 +198,7 @@ const resetPassword = async (req, res) => {
 
     user.password = hashedPassword;
     user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+    user.resetPasswordExpire = undefined;
 
     await user.save();
 

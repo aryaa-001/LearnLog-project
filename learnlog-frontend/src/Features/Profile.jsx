@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { User, Save, Lock, Camera } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/authSlice";
+import { getAssetUrl } from "../utils/assetUrl";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,9 @@ const Profile = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [previewImage, setPreviewImage] = useState(user?.profileImage || null);
+  const [previewImage, setPreviewImage] = useState(
+    getAssetUrl(user?.profileImage),
+  );
 
   const {
     handleSubmit: handleProfileSubmit,
@@ -38,7 +41,7 @@ const Profile = () => {
         age: user.age || "",
       });
 
-      setPreviewImage(user.profileImage || null);
+      setPreviewImage(getAssetUrl(user.profileImage));
     }
   }, [user, reset]);
 

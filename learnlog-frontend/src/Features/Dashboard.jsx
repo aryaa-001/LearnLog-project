@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Clock, TrendingUp, Target, User } from "lucide-react";
+import { getAssetUrl } from "../utils/assetUrl";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -110,7 +111,7 @@ const Dashboard = () => {
             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-yellow-400 shadow-md transition group-hover:scale-105 group-hover:shadow-lg bg-black flex items-center justify-center">
               {user?.profileImage ? (
                 <img
-                  src={user.profileImage}
+                  src={getAssetUrl(user.profileImage)}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />

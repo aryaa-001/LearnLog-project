@@ -11,10 +11,7 @@ const updateProfileInfo = async (req, res) => {
     };
 
     if (req.file) {
-      const baseUrl =
-        process.env.API_PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
-
-      updateData.profileImage = `${baseUrl.replace(/\/$/, "")}/uploads/${req.file.filename}`;
+      updateData.profileImage = `/uploads/${req.file.filename}`;
     }
 
     const user = await userModel

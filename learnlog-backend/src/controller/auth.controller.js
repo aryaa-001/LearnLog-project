@@ -12,6 +12,12 @@ const authCookieOptions = {
   path: "/",
 };
 
+const allowedClientOrigins = [
+  "http://localhost:5173",
+  "https://vishal-learnlog.vercel.app",
+  "https://learn-log-project.vercel.app",
+];
+
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -152,7 +158,11 @@ const handleForgotPassword = async (req, res) => {
 
     await user.save();
 
-    const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    const requestOrigin = req.get("origin");
+    const clientUrl =
+      requestOrigin && allowedClientOrigins.includes(requestOrigin)
+        ? requestOrigin
+        : process.env.CLIENT_URL || "http://localhost:5173";
     const resetUrl = `${clientUrl.replace(/\/$/, "")}/reset-password/${resetToken}`;
 
     await sendEmail({

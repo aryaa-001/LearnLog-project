@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
+
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { User, Save, Lock, Camera } from "lucide-react";
@@ -61,13 +62,7 @@ const Profile = () => {
         formData.append("profileImage", data.profileImage[0]);
       }
 
-      const res = await axios.put(
-        "http://localhost:5858/api/profile-update",
-        formData,
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await axiosInstance.put("/api/profile-update", formData);
 
       dispatch(loginSuccess(res.data.user));
       toast.success(res.data.message || "Profile updated successfully");
@@ -85,16 +80,10 @@ const Profile = () => {
 
   const onPasswordSubmit = async (data) => {
     try {
-      const res = await axios.put(
-        "http://localhost:5858/api/auth/change-password",
-        {
-          currentPassword: data.currentPassword,
-          newPassword: data.newPassword,
-        },
-        {
-          withCredentials: true,
-        },
-      );
+      const res = await axiosInstance.put("/api/auth/change-password", {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
 
       resetPasswordForm();
       setShowPasswordModal(false);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
+
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,9 +15,7 @@ const Dashboard = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      const res = await axios.get("http://localhost:5858/api/dashboard", {
-        withCredentials: true,
-      });
+      const res = await axiosInstance.get("/api/dashboard");
 
       setStats(res.data.stats);
     } catch (error) {

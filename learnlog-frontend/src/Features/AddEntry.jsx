@@ -1,12 +1,9 @@
 import React from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
+
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import {
-  PenSquare,
-  Save,
-  RotateCcw,
-} from "lucide-react";
+import { PenSquare, Save, RotateCcw } from "lucide-react";
 
 const AddEntry = () => {
   const { handleSubmit, register, reset } = useForm({
@@ -17,39 +14,24 @@ const AddEntry = () => {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post(
-        "http://localhost:5858/api/entries/add",
-        data,
-        {
-          withCredentials: true,
-        },
-      );
+      await axiosInstance.post("/api/entries/add", data);
 
-      toast.success(
-        "Learning entry created successfully",
-      );
+      toast.success("Learning entry created successfully");
 
       reset({
         topic: "",
         description: "",
         studyDuration: "",
         difficulty: "",
-        date: new Date()
-          .toISOString()
-          .split("T")[0],
+        date: new Date().toISOString().split("T")[0],
       });
     } catch (error) {
       const message = error.response?.data?.message;
 
       if (Array.isArray(message)) {
-        message.forEach((msg) =>
-          toast.error(msg),
-        );
+        message.forEach((msg) => toast.error(msg));
       } else {
-        toast.error(
-          message ||
-            "Failed to create learning entry",
-        );
+        toast.error(message || "Failed to create learning entry");
       }
     }
   };
@@ -60,9 +42,7 @@ const AddEntry = () => {
       description: "",
       studyDuration: "",
       difficulty: "",
-      date: new Date()
-        .toISOString()
-        .split("T")[0],
+      date: new Date().toISOString().split("T")[0],
     });
 
     toast("Form cleared");
@@ -77,31 +57,21 @@ const AddEntry = () => {
           </div>
 
           <div>
-            <h1 className="text-3xl font-bold">
-              Add Learning Entry
-            </h1>
-            <p className="text-gray-300 mt-1">
-              Record what you studied today.
-            </p>
+            <h1 className="text-3xl font-bold">Add Learning Entry</h1>
+            <p className="text-gray-300 mt-1">Record what you studied today.</p>
           </div>
         </div>
       </div>
 
       <div className="bg-white border border-yellow-200 rounded-3xl shadow-sm">
         <div className="px-6 py-5 border-b border-yellow-100">
-          <h2 className="text-xl font-bold text-gray-900">
-            Create Your Log
-          </h2>
+          <h2 className="text-xl font-bold text-gray-900">Create Your Log</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Fill in the details of your study
-            session.
+            Fill in the details of your study session.
           </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="p-6 space-y-6"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Topic Name
@@ -135,9 +105,7 @@ const AddEntry = () => {
                 type="number"
                 step="0.25"
                 min="0.25"
-                {...register(
-                  "studyDuration",
-                )}
+                {...register("studyDuration")}
                 placeholder="2"
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
@@ -151,18 +119,10 @@ const AddEntry = () => {
                 {...register("difficulty")}
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
               >
-                <option value="">
-                  Select Difficulty
-                </option>
-                <option value="Easy">
-                  Easy
-                </option>
-                <option value="Medium">
-                  Medium
-                </option>
-                <option value="Hard">
-                  Hard
-                </option>
+                <option value="">Select Difficulty</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
               </select>
             </div>
 

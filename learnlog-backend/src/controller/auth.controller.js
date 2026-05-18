@@ -34,6 +34,8 @@ const userLogin = async (req, res) => {
     });
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
     });
     res.status(200).json({
       success: true,
@@ -70,6 +72,8 @@ const userRegister = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
     });
 
     const userWithoutPassword = await userModel
@@ -240,7 +244,7 @@ const changePassword = async (req, res) => {
       message: "Password changed successfully",
     });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return res.status(500).json({
       message: "Internal server error",
     });

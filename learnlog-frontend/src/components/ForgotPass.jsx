@@ -13,6 +13,7 @@ const ForgotPass = () => {
         "/api/auth/forgot-password",
         data
       );
+      console.log("jbckld")
 
       reset();
       toast.success(res.data.message);

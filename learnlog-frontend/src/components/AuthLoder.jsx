@@ -6,18 +6,18 @@ import { loginSuccess, authFinished } from "../Redux/authSlice";
 const AuthLoader = ({ children }) => {
   const dispatch = useDispatch();
 
-useEffect(() => {
-  const checkAuth = async () => {
-    try {
-      const res = await axiosInstance.get("/api/auth/me");
-      dispatch(loginSuccess(res.data.user));
-    } catch (error) {
-      dispatch(logout());
-    }
-  };
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axiosInstance.get("/api/auth/me");
+        dispatch(loginSuccess(res.data.user));
+      } catch (error) {
+        dispatch(authFinished());
+      }
+    };
 
-  checkAuth();
-}, [dispatch]);
+    checkAuth();
+  }, [dispatch]);
 
   return children;
 };

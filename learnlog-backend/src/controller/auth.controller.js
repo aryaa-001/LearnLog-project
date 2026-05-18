@@ -5,6 +5,13 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/sendEmail");
 
+const authCookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  path: "/",
+};
+
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -16,11 +23,12 @@ const userLogin = async (req, res) => {
 
   try {
     const user = await userModel.findOne({ email });
-    if (!user)
-      res.status(404).json({
+    if (!user) {
+      return res.status(404).json({
         success: false,
         message: "Invalid credentials",
       });
+    }
 
     const isMatched = await bcrypt.compare(password, user.password);
     if (!isMatched) {
@@ -33,9 +41,8 @@ const userLogin = async (req, res) => {
       expiresIn: "1d",
     });
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      ...authCookieOptions,
+      maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
       success: true,
@@ -69,11 +76,12 @@ const userRegister = async (req, res) => {
       age,
     });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      ...authCookieOptions,
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     const userWithoutPassword = await userModel
@@ -102,7 +110,7 @@ const getMe = async (req, res) => {
 };
 
 const userLogout = async (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", authCookieOptions);
   res.status(200).json({
     success: true,
     message: "user logged out",

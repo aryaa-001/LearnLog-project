@@ -15,7 +15,12 @@ const isLoggedIn = (req, res, next) => {
     req.user = data;
     next();
   } catch (error) {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    });
     res.status(401).json({
       success: false,
       message: "Unauthorized user",

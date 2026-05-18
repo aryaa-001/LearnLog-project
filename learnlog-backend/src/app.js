@@ -5,9 +5,11 @@ const authRouter = require("./routes/auth.routes");
 const dashboardRouter = require("./routes/dashboard.routes");
 const profileRouter = require("./routes/profile.routes");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const app = express();
-app.use("/uploads", express.static("uploads"));
+app.set("trust proxy", 1);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 const allowedOrigins = [
   "http://localhost:5173",

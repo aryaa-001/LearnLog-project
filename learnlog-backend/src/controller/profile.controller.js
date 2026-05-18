@@ -1,8 +1,6 @@
 const userModel = require("../models/user.model");
 
 const updateProfileInfo = async (req, res) => {
-  console.log("req.body:", req.body);
-  console.log("req.file:", req.file);
   try {
     const { fullName, email, age } = req.body;
 
@@ -13,7 +11,10 @@ const updateProfileInfo = async (req, res) => {
     };
 
     if (req.file) {
-      updateData.profileImage = `https://learnlog-project-rx9c.onrender.com/uploads/${req.file.filename}`;
+      const baseUrl =
+        process.env.API_PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
+
+      updateData.profileImage = `${baseUrl.replace(/\/$/, "")}/uploads/${req.file.filename}`;
     }
 
     const user = await userModel

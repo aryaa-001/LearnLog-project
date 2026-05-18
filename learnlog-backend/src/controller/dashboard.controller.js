@@ -31,13 +31,19 @@ const getDashboardStats = async (req, res) => {
 
     let productivity = "Beginner";
 
-    if (thisWeekHours >= 34) {
-      productivity = "Excellent";
-    } else if (thisWeekHours >= 24) {
-      productivity = "Focused";
-    } else if (thisWeekHours >= 10) {
-      productivity = "Improving";
-    }else{productivity = "Backbencher"}
+    if (totalEntries == 0) {
+      productivity = "Newbie";
+    } else {
+      if (thisWeekHours >= 34) {
+        productivity = "Excellent";
+      } else if (thisWeekHours >= 24) {
+        productivity = "Focused";
+      } else if (thisWeekHours >= 10) {
+        productivity = "Improving";
+      } else {
+        productivity = "Backbencher";
+      }
+    }
 
     const weeklySummary = [];
 
@@ -87,4 +93,4 @@ const getDashboardStats = async (req, res) => {
   }
 };
 
-module.exports = {getDashboardStats};
+module.exports = { getDashboardStats };

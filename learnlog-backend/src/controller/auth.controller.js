@@ -266,12 +266,17 @@ const changePassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
+    res.clearCookie("token", authCookieOptions);
+
     return res.status(200).json({
-      message: "Password changed successfully",
+      success: true,
+      message: "Password changed successfully. Please login again.",
     });
   } catch (error) {
     console.log(error.message);
+
     return res.status(500).json({
+      success: false,
       message: "Internal server error",
     });
   }

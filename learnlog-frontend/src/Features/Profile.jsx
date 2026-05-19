@@ -98,10 +98,8 @@ const Profile = () => {
           "Password changed successfully. Please login again.",
       );
 
-      setTimeout(() => {
-        dispatch(logoutSuccess());
-        navigate("/login", { replace: true });
-      }, 1500);
+      dispatch(logoutSuccess());
+      navigate("/login", { replace: true });
     } catch (error) {
       const message = error.response?.data?.message;
 

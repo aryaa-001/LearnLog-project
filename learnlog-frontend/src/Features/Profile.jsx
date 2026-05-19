@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
-
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { User, Save, Lock, Camera } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { loginSuccess } from "../Redux/authSlice";
+import { loginSuccess, logoutSuccess } from "../Redux/authSlice";
 import { getAssetUrl } from "../utils/assetUrl";
 
 const Profile = () => {
@@ -17,6 +17,8 @@ const Profile = () => {
   const [previewImage, setPreviewImage] = useState(
     getAssetUrl(user?.profileImage),
   );
+
+  const navigate = useNavigate();
 
   const {
     handleSubmit: handleProfileSubmit,
@@ -91,7 +93,15 @@ const Profile = () => {
       resetPasswordForm();
       setShowPasswordModal(false);
 
-      toast.success(res.data.message || "Password changed successfully");
+      toast.success(
+        res.data.message ||
+          "Password changed successfully. Please login again.",
+      );
+
+      setTimeout(() => {
+        dispatch(logoutSuccess());
+        navigate("/login", { replace: true });
+      }, 1500);
     } catch (error) {
       const message = error.response?.data?.message;
 
@@ -102,7 +112,6 @@ const Profile = () => {
       }
     }
   };
-
   return (
     <>
       <div className="space-y-6">
